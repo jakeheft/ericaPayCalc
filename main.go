@@ -7,11 +7,9 @@ import (
 )
 
 type inputData struct {
-	FullPayDays  float32 `json:"fulldays"`
-	HalfPayDays  float32 `json:"halfdays"`
+	FullPayHours float32 `json:"fullhours"`
+	HalfPayHours float32 `json:"halfhours"`
 	LateSegments float32 `json:"latesegments"`
-	LessHours    float32 `json:"lesshours"`
-	ExtraHours   float32 `json:"extrahours"`
 }
 
 const (
@@ -27,15 +25,11 @@ func calculatePay(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "err decoding body", http.StatusBadRequest)
 	}
 
-	// figure out total hours full
-	fullPayHours = data.FullPayDays * 8
-	fullPayHours += data.ExtraHours
-	fullPayHours -= data.LessHours
+	fullPayHours = data.FullPayHours
 	lateHours = data.LateSegments * 0.25
 	fullPayHours += lateHours
 	fullPayTotal := fullPayHours * fullRate
-	// figure out total hours half
-	halfPayHours = data.HalfPayDays * 8
+	halfPayHours = data.HalfPayHours
 	halfPayTotal := halfPayHours * halfRate
 	total := fullPayTotal + halfPayTotal
 

@@ -10,20 +10,14 @@
 <body>
 	<h1>Enter Numbers to Calculate</h1>
 	<form id="calcForm">
-		<input type="number" id="fulldays" name="fulldays" required>
-		<label for="fulldays">Number of full days</label>
+		<input type="number" id="fullhours" name="fullhours" required>
+		<label for="fullhours">Number of hours at full pay</label>
 		<br><br>
-		<input type="number" id="halfdays" name="halfdays" required>
-		<label for="halfdays">Number of half pay days (i.e. sick, PTO, etc)</label>
+		<input type="number" id="halfhours" name="halfhours" required>
+		<label for="halfhours">Number of hours at half pay (i.e. sick days, PTO, etc)</label>
 		<br><br>
 		<input type="number" id="latesegments" name="latesegments" required>
 		<label for="latesegments">Number of "late segments"</label>
-		<br><br>
-		<input type="number" id="lesshours" name="lesshours" required>
-		<label for="lesshours">Enter any "less hours"</label>
-		<br><br>
-		<input type="number" id="extrahours" name="extrahours" required>
-		<label for="extrahours">Enter any "extra hours"</label>
 		<br><br>
 		<button type="submit">Submit</button>
 	</form>
@@ -34,17 +28,15 @@
 			e.preventDefault();
 
 			// Gather inputs
-			const fulldays = parseInt(document.getElementById('fulldays').value);
-			const halfdays = parseInt(document.getElementById('halfdays').value);
+			const fullhours = parseInt(document.getElementById('fullhours').value);
+			const halfhours = parseInt(document.getElementById('halfhours').value);
 			const latesegments = parseInt(document.getElementById('latesegments').value);
-			const lesshours = parseInt(document.getElementById('lesshours').value);
-			const extrahours = parseInt(document.getElementById('extrahours').value);
 
 			// Send data to the backend
 			const response = await fetch('http://localhost:8080/calculate', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ fulldays, halfdays, latesegments, lesshours, extrahours })
+				body: JSON.stringify({ fullhours, halfhours, latesegments })
 			});
 
 			// Display result
