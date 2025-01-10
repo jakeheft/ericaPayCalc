@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Simple Front-End</title>
+</head>
+
+<body>
+	<h1>Enter Numbers to Calculate</h1>
+	<form id="calcForm">
+		<input type="number" id="fulldays" name="fulldays" required>
+		<label for="fulldays">Number of full days</label>
+		<br><br>
+		<input type="number" id="halfdays" name="halfdays" required>
+		<label for="halfdays">Number of half pay days (i.e. sick, PTO, etc)</label>
+		<br><br>
+		<input type="number" id="latesegments" name="latesegments" required>
+		<label for="latesegments">Number of "late segments"</label>
+		<br><br>
+		<input type="number" id="lesshours" name="lesshours" required>
+		<label for="lesshours">Enter any "less hours"</label>
+		<br><br>
+		<input type="number" id="extrahours" name="extrahours" required>
+		<label for="extrahours">Enter any "extra hours"</label>
+		<br><br>
+		<button type="submit">Submit</button>
+	</form>
+	<h2>Result: <span id="result">N/A</span></h2>
+
+	<script>
+		document.getElementById('calcForm').addEventListener('submit', async function (e) {
+			e.preventDefault();
+
+			// Gather inputs
+			const fulldays = parseInt(document.getElementById('fulldays').value);
+			const halfdays = parseInt(document.getElementById('halfdays').value);
+			const latesegments = parseInt(document.getElementById('latesegments').value);
+			const lesshours = parseInt(document.getElementById('lesshours').value);
+			const extrahours = parseInt(document.getElementById('extrahours').value);
+
+			// Send data to the backend
+			const response = await fetch('http://localhost:8080/calculate', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ fulldays, halfdays, latesegments, lesshours, extrahours })
+			});
+
+			// Display result
+			const data = await response.json();
+			document.getElementById('result').textContent = data.result;
+		});
+	</script>
+</body>
+
+</html>
